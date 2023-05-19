@@ -8,13 +8,54 @@
     <title>Document</title>
 </head>
 <body>
-    <div>
-        <p>Enter Name:</p>
-        <input id ="input" type="text" placeholder="Mandy..." />
-        <button id ="button">greet Me!</button>
-        <p id ="greet"></p>
+    <div class="container" >
+        <div class="header" >
+         <h1>Greeting</h1>
+        </div>
+        <div class="main clearfix" >
+            
+            <div class="content" >
+                <div>
+                    <p><h3>Enter Your Name:</h3></p>
+                    <div>
+                        
+                        <p class="error"></p>
+                        <input class ="input" type="text" placeholder="Mandy..." />
+                        <tr>
+                            <td></td>
+                            <td><span class="countNames">0</span></td>
+                        </tr>
+                        <p class ="greet"></p>
+                        
+                    </div>
+                    <div>
+                        <label class="">
+                            <input type="radio" name="billItemType" class="englishItemTypeRadio" value="English">
+                            <span class="label-body">English</span>
+                        </label>
+                        <label class="">
+                            <input type="radio" name="billItemType" class="englishItemTypeRadio" value="Afrikaans">
+                            <span class="label-body">Afrikaans</span>
+                        </label>
+                        <label class="">
+                            <input type="radio" name="billItemType" class="englishItemTypeRadio" value="isiZulu">
+                            <span class="label-body">isiZulu</span>
+                        </label>
+                    </div>
+                    <div class = "btn">
+                        <button class ="button buttons">greet Me!</button>
+                        <button class ="resetButton buttons">Reset</button>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+        <div class="footer" >
+           
+        </div>
     </div>
     
 </body>
-<script src="js/greet.js"></script>
+<script src="js/greet.js" charset="utf-8"></script>
+<script src="factory/greetings.factory.js" charset="utf-8"></script>
 </html>
