@@ -47,7 +47,7 @@ describe('the greet factory function' , function(){
                NamesCounts.enter('Sammy');
                NamesCounts.enter('Mandisa');
 
-               assert.equal('hello, undefined!', NamesCounts.getGreetedEnglish());
+               assert.equal('4', NamesCounts.getGreetedEnglish());
 
             });
             it("should be able to stop the count when the name has been passed multiple times" , function(){

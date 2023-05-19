@@ -15,7 +15,7 @@ function greetings(){
     };
     
     
-        if(namesCount[Name] === "English"){
+        function getGreetedEnglish(Name){
             return "hello,"  + " " + Name + "!";
     
         }
@@ -36,7 +36,7 @@ function greetings(){
     }
 
     return {
-        //getGreetedEnglish,
+        getGreetedEnglish,
         enter,
         getGreetedAfrikaans,
         getGreetedZulu,
