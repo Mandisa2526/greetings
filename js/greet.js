@@ -6,9 +6,7 @@ let greetMessageElement = document.querySelector(".greet");
 let resetBtnElement = document.querySelector(".resetButton");
 let greetRadioElement = document.querySelector(".englishItemTypeRadio");
 let greetingsTotalElement = document.querySelector(".countNames");
-let errorMessageElem = document.querySelector(".error");
-
-var greetCount = localStorage.getItem('greetCount') ?? 0;  
+let errorMessageElem = document.querySelector(".error");  
 
 
 var greetObject = greetingsFactory();
@@ -37,8 +35,7 @@ function greetBtn(){
 greetingsBtnElement.addEventListener('click',greetBtn);
 
 function reset() {
-    greetCount= 0;
-   
-    greetingsTotalElement.innerHTML = greetCount;
+    greetObject.reset();
+    greetingsTotalElement.innerHTML = greetObject.getNameCount();
 }
 resetBtnElement.addEventListener('click',reset);

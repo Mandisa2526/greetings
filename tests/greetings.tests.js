@@ -51,23 +51,24 @@ describe('the greet factory function' , function(){
     describe('Counter' , function(){
         it('should be able to count names entered' , function(){
             var namesCounts = greetingsFactory();
-            namesCounts.reset();
-            namesCounts.greet('Nobuhle');
-            namesCounts.greet('Mpatho');
+           
             namesCounts.greet('Sammy');
             namesCounts.greet('Mandisa');
+            namesCounts.greet('Mandisa');
 
-            assert.equal(4, namesCounts.getNameCount());
+            assert.equal(3, namesCounts.getNameCount());
         });
 
         it("should  not count when the name has been passed multiple times" , function(){
             var namesCounts = greetingsFactory();
-            namesCounts.reset();
             namesCounts.greet('Nobuhle');
+            namesCounts.greet('Nobuhle');
+            namesCounts.greet('Sammy');
+            namesCounts.greet('Sammy');
             namesCounts.greet('Mpatho');
-            namesCounts.greet('Sammy');
-            namesCounts.greet('Sammy');
-            assert.equal(3, namesCounts.getNameCount());
+            namesCounts.greet('Mpatho');
+
+            assert.equal(3, namesCounts.getNameCount(''));
         });
         it("should be able to reset the counter to zero" , function(){
             var namesCounts = greetingsFactory();
@@ -75,7 +76,16 @@ describe('the greet factory function' , function(){
             namesCounts.greet('Nobuhle');
             namesCounts.greet('Mpatho');
             namesCounts.greet('Sammy');
-            namesCounts.reset()
+        
+            assert.equal(0, namesCounts.getNameCount());
+        });
+        it("should be able to store the usernames passed" , function(){
+            var namesCounts = greetingsFactory();
+            namesCounts.reset();
+            namesCounts.getNameCount();
+            namesCounts.greet('Mpatho');
+            namesCounts.greet('Sammy');
+        
             assert.equal(0, namesCounts.getNameCount());
         });
 

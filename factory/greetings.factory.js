@@ -10,23 +10,26 @@ function greetingsFactory(){
         if (!language) {
             error +=  "Please select the language!";
         }
-        name = name.toUpperCase();
-        if (localStorage.getItem(name) === undefined){
-            localStorage.setItem(name, 1);
-        } else {
-            var count = localStorage.getItem(name);
-            localStorage.setItem(name, count++);
+        if (error === "") {
+            name = name.toUpperCase();
+            if (localStorage.getItem(name) === undefined){
+                localStorage.setItem(name, 1);
+            } else {
+                var count = localStorage.getItem(name);
+                localStorage.setItem(name, count++);
+            }
+    
+            if (language === "English"){
+                message = "Hello," + " " + name + "!";
+            } else if(language === "Afrikaans"){
+                message = "Hallo, " + name + "!";
+            } else if(language === "isiZulu"){ 
+                message = "Sawubona, " + name + '!';  
+            } else {
+                message = "";
+            }
         }
 
-        if (language === "English"){
-            message = "Hello," + " " + name + "!";
-        } else if(language === "Afrikaans"){
-            message = "Hallo, " + name + "!";
-        } else if(language === "isiZulu"){ 
-            message = "Sawubona, " + name + '!';  
-        } else {
-            message = "";
-        }
     }
 
     function getNameCount() {
