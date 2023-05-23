@@ -70,15 +70,7 @@ describe('the greet factory function' , function(){
 
             assert.equal(3, namesCounts.getNameCount(''));
         });
-        it("should be able to reset the counter to zero" , function(){
-            var namesCounts = greetingsFactory();
-            namesCounts.reset();
-            namesCounts.greet('Nobuhle');
-            namesCounts.greet('Mpatho');
-            namesCounts.greet('Sammy');
         
-            assert.equal(0, namesCounts.getNameCount());
-        });
         it("should be able to store the usernames passed" , function(){
             var namesCounts = greetingsFactory();
             namesCounts.reset();
@@ -88,6 +80,20 @@ describe('the greet factory function' , function(){
         
             assert.equal(0, namesCounts.getNameCount());
         });
+
+    });
+    describe('Reset Button' , function(){
+        
+        it("should be able to reset the counter to zero" , function(){
+            var namesCounts = greetingsFactory();
+            namesCounts.reset();
+            namesCounts.greet('Nobuhle');
+            namesCounts.greet('Mpatho');
+            namesCounts.greet('Sammy');
+        
+            assert.equal(0, namesCounts.getNameCount());
+        });
+        
 
     });
     
