@@ -6,67 +6,31 @@ let greetMessageElement = document.querySelector(".greet");
 let resetBtnElement = document.querySelector(".resetButton");
 let greetRadioElement = document.querySelector(".englishItemTypeRadio");
 let greetingsTotalElement = document.querySelector(".countNames");
-let errorMessageElem = document.querySelector(".error")
+let errorMessageElem = document.querySelector(".error");
 
-var greetCount = 0;
-var namesGreeted = {};
+var greetCount = localStorage.getItem('greetCount') ?? 0;  
+
+
+var greetObject = greetingsFactory();
 
 function greetBtn(){
     var checkedRadioGreet = document.querySelector("input[name='billItemType']:checked");
-    
-    if(checkedRadioGreet && inputElement.value){
-        var nameType = checkedRadioGreet.value;
-        var typename = inputElement.value;
-        var username = typename.toUpperCase();
-        inputElement.value = "";
-        errorMessageElem.innerHTML = "";
-
-
-        if(nameType === "English"){
-           //var message = 'Hello,';
-           greetMessageElement.innerHTML = "Hello," + " " + username + "!";
-
-          //    greetCount++;
-         //    localStorage['entered'] = greetCount;
-          //    greetingsTotalElement.innerHTML = greetCount;
-           
-        } 
-        if(nameType === "Afrikaans"){
-          var languageAfrikaans = "Hallo,";
-          greetMessageElement.innerHTML = languageAfrikaans + " " + username + "!";
-
-          //   greetCount++;
-          //   localStorage['entered'] = greetCount;
-          //   greetingsTotalElement.innerHTML = greetCount;
-      
-        }
-        if(nameType === "isiZulu"){
-           var zuluLanguage = "Sawubona,"
-           greetMessageElement.innerHTML = zuluLanguage + " " + username + '!';
-
-          //  greetCount++;
-          //  localStorage['entered'] = greetCount;
-          //  greetingsTotalElement.innerHTML = greetCount;
-        }
-
-        if (namesGreeted[username] === undefined){
-            greetCount++;
-            //add an entry for the user that was greeted in the Object Map
-            namesGreeted[username] = 1;
-        } else {
-            // update the counter for a specific username
-            namesGreeted[username]++;
-        }
-        //update the DOM to display the counter
-        greetingsTotalElement.innerHTML = greetCount;
-
-               
-    } else if(inputElement.value) {
-       errorMessageElem.innerHTML =  "Please select the language!";
-    } else {
-        errorMessageElem.innerHTML = "Enter your name!"
+    var nameType = '';
+    if (checkedRadioGreet) {
+        nameType = checkedRadioGreet.value;
+        checkedRadioGreet.checked = false;
     }
-
+    var typename = ''; 
+    if (inputElement.value) {
+        typename = inputElement.value;
+        inputElement.value = "";
+    } 
+    greetObject.greet(typename, nameType);
+    greetingsTotalElement.innerHTML = greetObject.getNameCount();
+    greetMessageElement.innerHTML = greetObject.getMessage();
+    setTimeout(function(){greetMessageElement.innerHTML = "";},5000);
+    errorMessageElem.innerHTML = greetObject.getError();
+    setTimeout(function(){errorMessageElem.innerHTML = "";},3000);
 
     
 }
@@ -74,6 +38,7 @@ greetingsBtnElement.addEventListener('click',greetBtn);
 
 function reset() {
     greetCount= 0;
+   
     greetingsTotalElement.innerHTML = greetCount;
 }
 resetBtnElement.addEventListener('click',reset);

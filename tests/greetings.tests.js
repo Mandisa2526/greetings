@@ -1,71 +1,86 @@
 describe('the greet factory function' , function(){
     describe('Greet in different languages' , function(){
         it('should be able to greet in "English' , function(){
-            let greetDifferent = greetings();
-
-            greetDifferent.enter('Samu');
-      
-            assert.equal('hello, Samu!', greetDifferent.getGreetedEnglish('Samu'));
+            let greetDifferent = greetingsFactory();
+            greetDifferent.greet('Samu', "English")
+            assert.equal('Hello, SAMU!', greetDifferent.getMessage());
     
         });
         it('should be able to greet in "Afrikaans"' , function(){
-            let greetDifferent2 = greetings();
-
-            greetDifferent2.enter('Ntokozo');
-      
-            assert.equal('hallo, Ntokozo!', greetDifferent2.getGreetedAfrikaans('Ntokozo'));
+            let greetDifferent2 = greetingsFactory();
+            greetDifferent2.greet('Ntokozo', 'Afrikaans')
+            assert.equal('Hallo, NTOKOZO!', greetDifferent2.getMessage());
             
         });
         it('should be able to greet in "isiZulu" ' , function(){
-            let greetDifferent3 = greetings();
-
-            greetDifferent3.enter('Nhlosenhle');
-      
-            assert.equal('Sawubona, Nhlosenhle!', greetDifferent3.getGreetedZulu('Nhlosenhle'));
-    
+            let greetDifferent3 = greetingsFactory();
+            greetDifferent3.greet('Nhlosenhle', 'isiZulu')
+            assert.equal('Sawubona, NHLOSENHLE!', greetDifferent3.getMessage());
         });
         
     
     });
+
     describe('Error Messages ' , function(){
-        it('should be able to return an error message when the name is not entered' , function(){
-           
-            
+        it('should be able to return an error message when the name is not entered and the language ' , function(){
+            let greetDifferent4 = greetingsFactory();
+            greetDifferent4.greet("");
+
+            assert.equal('Enter your name!Please select the language!', greetDifferent4.getError("",""));     
         });
-        it('should be able to display an error message when the language is not selected' , function(){
-           
-            
+
+        it('should be able to display an error message when the username is not passed' , function(){
+            let greetDifferent4 = greetingsFactory();
+            greetDifferent4.greet("");
+
+            greetDifferent4.greet("",'isiZulu')
+            assert.equal('Enter your name!', greetDifferent4.getError());
+            greetDifferent4.greet("",'English')
+            assert.equal('Enter your name!', greetDifferent4.getError());
+            greetDifferent4.greet("",'Afrikaans')
+            assert.equal('Enter your name!', greetDifferent4.getError());
+        });   
+        it('should be able to return an error message when the language is not selected' , function(){
+            let greetDifferent4 = greetingsFactory();
+            greetDifferent4.greet("Mandisa");
+            greetDifferent4.greet("Mandisa","")
+            assert.equal('Please select the language!', greetDifferent4.getError());     
+        });     
+    });    
+
+    describe('Counter' , function(){
+        it('should be able to count names entered' , function(){
+            var namesCounts = greetingsFactory();
+            namesCounts.reset();
+            namesCounts.greet('Nobuhle');
+            namesCounts.greet('Mpatho');
+            namesCounts.greet('Sammy');
+            namesCounts.greet('Mandisa');
+
+            assert.equal(4, namesCounts.getNameCount());
         });
-        
-        
-        describe('Counter' , function(){
-            it('should be able to count names entered' , function(){
-               NamesCounts = greetings();
-               
-               NamesCounts.enter('Nobuhle');
-               NamesCounts.enter('Mpatho');
-               NamesCounts.enter('Sammy');
-               NamesCounts.enter('Mandisa');
 
-               assert.equal('4', NamesCounts.getGreetedEnglish());
+        it("should  not count when the name has been passed multiple times" , function(){
+            var namesCounts = greetingsFactory();
+            namesCounts.reset();
+            namesCounts.greet('Nobuhle');
+            namesCounts.greet('Mpatho');
+            namesCounts.greet('Sammy');
+            namesCounts.greet('Sammy');
+            assert.equal(3, namesCounts.getNameCount());
+        });
+        it("should be able to reset the counter to zero" , function(){
+            var namesCounts = greetingsFactory();
+            namesCounts.reset();
+            namesCounts.greet('Nobuhle');
+            namesCounts.greet('Mpatho');
+            namesCounts.greet('Sammy');
+            namesCounts.reset()
+            assert.equal(0, namesCounts.getNameCount());
+        });
 
-            });
-            it("should be able to stop the count when the name has been passed multiple times" , function(){
-                
-            });
-            // it("should be able to reset the counter to zero" , function(){
-            //     let greetDifferent4 = greetings();
-
-            // });
-
-            
-
-            
-             
-        })
-    
-    
     });
+    
     
 
 });

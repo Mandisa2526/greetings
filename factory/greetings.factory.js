@@ -1,46 +1,54 @@
-function greetings(){
-    const namesCount = {};
-    var greetTotalCount = 0;
-
-    function enter(Name){
-        
-        if (namesCount[Name] === undefined){
-            greetTotalCount++;
-            //add an entry for the user that was greeted in the Object Map
-            namesCount[Name] = 1;
+function greetingsFactory(){
+    var message = "";
+    var error = ""
+    
+    function greet(name, language){
+        error = '';
+        if(!name){
+            error += 'Enter your name!'
+        } 
+        if (!language) {
+            error +=  "Please select the language!";
+        }
+        name = name.toUpperCase();
+        if (localStorage.getItem(name) === undefined){
+            localStorage.setItem(name, 1);
         } else {
-            // update the counter for a specific username
-            namesCount[Name]++;
-        }
-    };
-    
-    
-        function getGreetedEnglish(Name){
-            return "hello,"  + " " + Name + "!";
-    
-        }
-        function getGreetedAfrikaans(Name){
-            return "hallo,"  + " " + Name + "!";
-    
-        }
-        function getGreetedZulu(Name){
-            return "Sawubona,"  + " " + Name + "!";
-    
+            var count = localStorage.getItem(name);
+            localStorage.setItem(name, count++);
         }
 
-    
-     function reset(){
-        if(greetTotalCount > 0){
-            return greetTotalCount;
+        if (language === "English"){
+            message = "Hello," + " " + name + "!";
+        } else if(language === "Afrikaans"){
+            message = "Hallo, " + name + "!";
+        } else if(language === "isiZulu"){ 
+            message = "Sawubona, " + name + '!';  
+        } else {
+            message = "";
         }
     }
 
+    function getNameCount() {
+        return localStorage.length;
+    }
+
+    function reset() {
+        localStorage.clear();
+    }
+
+    function getMessage() {
+        return message;
+    }
+
+    function getError() {
+        return error;
+    }
     return {
-        getGreetedEnglish,
-        enter,
-        getGreetedAfrikaans,
-        getGreetedZulu,
-        reset
-        
+        greet,
+        reset,
+        getMessage,
+        getError,
+        getNameCount,  
     }
 }
