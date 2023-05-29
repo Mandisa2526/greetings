@@ -1,7 +1,7 @@
 function greetingsFactory(){
     var message = "";
     var error = "";
-    //var erros = "";
+    var message2 = "";
     function greet(name, language){
         error = '';
         if(!name){
@@ -37,13 +37,15 @@ function greetingsFactory(){
     }
 
     function reset() {
-        localStorage.clear();
+       // localStorage.clear();
+        localStorage.clear()
+        message2 = "Successfully cleared!";
         
     }
     
-    //  function getResetMessage(){
-    //     return erros;
-    //  }
+    function getResetMessage(){
+        return message2;
+    } 
 
     function getMessage() {
         return message;
@@ -59,6 +61,6 @@ function greetingsFactory(){
         getMessage,
         getError,
         getNameCount, 
-      // getResetMessage, 
+        getResetMessage, 
     }
 }

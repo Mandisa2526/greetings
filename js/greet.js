@@ -31,6 +31,7 @@ function greetBtn(){
     setTimeout(function(){greetMessageElement.innerHTML = "";},5000);
     errorMessageElem.innerHTML = greetObject.getError();
     setTimeout(function(){errorMessageElem.innerHTML = "";},3000);
+    
 
     
 }
@@ -40,7 +41,7 @@ function reset() {
     greetObject.reset();
     alert('Reset button is clicked');
     greetingsTotalElement.innerHTML = greetObject.getNameCount();
-    
-    //greetMessageElement.innerHTML = greetObject.getMessage();
+    resetMessegeElement.innerHTML = greetObject.getResetMessage();
+    setTimeout(function(){resetMessegeElement.innerHTML = "";},3000);
 }
 resetBtnElement.addEventListener('click',reset);

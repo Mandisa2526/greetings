@@ -80,7 +80,7 @@ describe('the greet factory function' , function(){
         
             assert.equal(0, namesCounts.getNameCount());
         });
-
+ 
     });
     describe('Reset Button' , function(){
         
