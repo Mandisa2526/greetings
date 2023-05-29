@@ -1,11 +1,11 @@
 function greetingsFactory(){
     var message = "";
-    var error = ""
-    
+    var error = "";
+    //var erros = "";
     function greet(name, language){
         error = '';
         if(!name){
-            error += 'Enter your name!'
+            error += 'Enter your name!';
         } 
         if (!language) {
             error +=  "Please select the language!";
@@ -38,20 +38,27 @@ function greetingsFactory(){
 
     function reset() {
         localStorage.clear();
+        
     }
+    
+    //  function getResetMessage(){
+    //     return erros;
+    //  }
 
     function getMessage() {
         return message;
     }
-
+    
     function getError() {
         return error;
     }
+
     return {
         greet,
         reset,
         getMessage,
         getError,
-        getNameCount,  
+        getNameCount, 
+      // getResetMessage, 
     }
 }
