@@ -3,7 +3,6 @@ export default function GreetingsFactory() {
     var error = "";
     var message2 = "";
     var namesGreeted = {};
-    var greetingsCounter = 0
 
     function greet(name, language) {
         error = '';
@@ -12,17 +11,6 @@ export default function GreetingsFactory() {
         }
         if (!language) {
             error += "Please select the language!";
-        }
-
-        //when the greet button is pressed check if this user was already greeted before
-        //by looking if the userName exists in namesGreeted if not increment this counter and update the screen
-        if (namesGreeted[name] === undefined) {
-            greetingsCounter++;
-            //add an entry for the user that was greeted in the Object Map
-            namesGreeted[name] = 1;
-        } else {
-            // update the counter for a specific username
-            namesGreeted[name]++;
         }
 
 
@@ -37,17 +25,42 @@ export default function GreetingsFactory() {
             } else {
                 message = "";
             }
+
+            //when the greet button is pressed check if this user was already greeted before
+            //by looking if the userName exists in namesGreeted if not increment this counter and update the screen
+            if (namesGreeted[name] === undefined) {
+                //add an entry for the user that was greeted in the Object Map
+                namesGreeted[name] = 1;
+            } else {
+                // update the counter for a specific username
+                namesGreeted[name]++;
+            }
+        } else {
+            message = "";
         }
 
     }
 
     function getNameCount() {
+        return Object.keys(namesGreeted).length
+    }
 
-        return greetingsCounter;
+    function getNamesGreeted() {
+        let names = [];
+        Object.keys(namesGreeted).forEach(key => {
+            names.push({
+                name: key,
+            })
+        });
+        return names;
+    }
+
+    function getGreetedCount(name){
+      return namesGreeted[name];
     }
 
     function reset() {
-        localStorage.clear()
+        namesGreeted = {};
         message2 = "Successfully cleared!";
     }
 
@@ -73,5 +86,7 @@ export default function GreetingsFactory() {
         getError,
         getNameCount,
         getResetMessage,
+        getNamesGreeted,
+        getGreetedCount
     }
 }

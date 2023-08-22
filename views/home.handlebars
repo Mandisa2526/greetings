@@ -28,10 +28,11 @@
                             <p id="reset" class="reset">{{resetmessage}}</p>
                             <p id="error" class="error">{{errorMsg}}</p>
                             <label for="">Enter Your Name:</label>
-                            <input class="input" type="text" placeholder=" " name="inputName" />
-                            <span class="countNames">{{counts}}</span>
+                            <input class="input" type="text" placeholder=" " name="inputName" pattern="[A-Za-z]+" title="no numbers or special characters"/>
+                            <span class="countNames" value="nameCounts">{{counts}}</span>
                             <p class="greet">{{message}}</p>
                         </div>
+                        <a href="/greeted">Users</a>
                         <div class="text-center">
                             <label class="label-body">English</label>
                             <input type="radio" name="billItemType" class="englishItemTypeRadio" value="English">
@@ -44,7 +45,8 @@
 
                             <div class="d-flex justify-content-center">
                                 <button class="btn-default btn btn-info" type="submit" name="button">greet Me!</button>
-                                <button class="btn-default btn btn-primary">Users</button>
+                                <button class="btn-default btn btn-primary resetButton" type="submit"
+                                    name="button">Reset</button>
                             </div>
                         </div>
                     </form>
@@ -53,10 +55,16 @@
             <script>
                 let greetMessage = document.querySelector(".greet");
                 let error = document.querySelector("#error");
-                setTimeout(function(){
+                //let clearMessage = document.querySelector(".reset");
+                let resetBtn = document.querySelector(".resetButton");
+
+                setTimeout(function () {
                     greetMessage.innerHTML = "";
                     error.innerHTML = "";
-                },3000);
+                    //clearMessage.innerHTML = "";
+
+                }, 3000);
+
             </script>
         </div>
     </div>
