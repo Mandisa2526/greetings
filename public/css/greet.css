@@ -1,7 +1,10 @@
 h1{
     text-align: center;
     color: #00509d;
+    font-size: 80px;
+    padding: 10px;
 }
+
 body {
     
     font-family: arial;
@@ -9,7 +12,7 @@ body {
 .label-body{
     color: #00509d;
 }
-a:link, a:visited {
+link:link, a:visited {
     background-color: navy;
     color: white;
     padding: 14px 25px;
@@ -18,7 +21,7 @@ a:link, a:visited {
     display: inline-block;
 }
   
-  a:hover, a:active {
+  link:hover, a:active {
     background-color:blue;
   }
 
@@ -53,11 +56,18 @@ a:link, a:visited {
     }
 }
 .content{
+    background-color: #0077b6;
+    margin:1em;
+    padding: 1em;
+}
+.app{
     background-color: white;
+    margin:1em;
+    padding: 1em;
 }
 .input{
-  height: 100px;
-  width: 40%;
+  height: 40px;
+  width: 20%;
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
@@ -78,8 +88,9 @@ a:link, a:visited {
     text-align: center;
 }
 .countNames{
-    font-size: 300%;
-    color: #666;
+    font-size: 500%;
+    color: #666;   
+    line-height: 1.5
 }
 h3{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;

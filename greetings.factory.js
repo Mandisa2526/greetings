@@ -61,7 +61,7 @@ export default function GreetingsFactory() {
 
     function reset() {
         namesGreeted = {};
-        message2 = "Successfully cleared!";
+        //message2 = "Successfully cleared!";
     }
 
     function getResetMessage() {
