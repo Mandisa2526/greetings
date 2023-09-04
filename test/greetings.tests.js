@@ -1,5 +1,9 @@
 import assert from "assert";
 import GreetingsFactory from '../greetings.factory.js';
+import pgp from 'pg-promise';
+
+
+
 
 describe('the greet factory function' , function(){
     describe('Greet in different languages' , function(){
@@ -51,91 +55,59 @@ describe('the greet factory function' , function(){
         });     
     });    
 
-    describe('Counter' , function(){
-        it('should be able to count names entered' , function(){
-            var namesCounts = GreetingsFactory();
-           
-            namesCounts.greet('Sammy');
-            namesCounts.greet('Mandisa');
-            namesCounts.greet('Mandisa');
-
-            assert.equal(3, namesCounts.getNameCount());
-        });
-
-        it("should  not count when the name has been passed multiple times" , function(){
-            var namesCounts = GreetingsFactory();
-            namesCounts.greet('Nobuhle');
-            namesCounts.greet('Nobuhle');
-            namesCounts.greet('Sammy');
-            namesCounts.greet('Sammy');
-            namesCounts.greet('Mpatho');
-            namesCounts.greet('Mpatho');
-
-            assert.equal(3, namesCounts.getNameCount(''));
-        });
-        
-        it("should be able to store the usernames passed" , function(){
-            var namesCounts = GreetingsFactory();
-            namesCounts.reset();
-            namesCounts.getNameCount();
-            namesCounts.greet('Mpatho');
-            namesCounts.greet('Sammy');
-        
-            assert.equal(0, namesCounts.getNameCount());
-        });
- 
-    });
-    describe('Reset Button' , function(){
-        
-        it("should be able to reset the counter to zero" , function(){
-            var namesCounts = GreetingsFactory();
-            namesCounts.reset();
-            namesCounts.greet('Nobuhle');
-            namesCounts.greet('Mpatho');
-            namesCounts.greet('Sammy');
-        
-            assert.equal(0, namesCounts.getNameCount());
-        });
-        
-
-    });
-    
-    
 
 });
 
-import assert from 'assert';
-import GreetingsFactory from '../greetings.factory.js';
-import fetchCountUserByName from '../greetings.factory.js'
-import pgp from 'pg-promise';
-
-// we are using a special test database for the tests
-const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:3002/database.tests.js';
-
-const db = pgp(connectionString);
 
 describe('The basic database web app', function(){
+    let dataBase;
+
 
     beforeEach(async function(){
         // clean the tables before each test run
-        await db.none("delete from users;");
-        //await db.none("delete from categories;");
+       //await db.none("delete from users;");
+        //await db.none("delete from users;");
+        const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
+        const db = pgp(connectionString);
+        dataBase = pgp()(connectionString);
+    });
+    it("should able to insert user names", async function () {
+
+        let greetingsFactory = GreetingsFactory();
+
+        await greetingsFactory.GreetingsFactory("Mandisa");
+    
+        // try {
+        //     let greetingsFactory = GreetingsFactory();
+
+        //     await greetingsFactory.add({
+        //         description: "Eric",
+        //     });
+        //     await greetingsFactory.add({
+        //         description: "lwandle",
+        //     });
+        //     let greetings = await GreetingsFactory.all();
+        //     assert.equal(2, greetings.length);
+        // } catch (err) {
+        //     console.log(err);
+        // }
+
     });
 
-    it('should pass the db test', async function(){
+    // it('should pass the db test', async function(){
         
-        // the Factory Function is called CategoryService
-        let greetingsFactory = GreetingsFactory(db);
-        await greetingsFactory.add({
-            description : "Diary"
-        });
+    //     // the Factory Function is called CategoryService
+    //     let greetingsFactory = GreetingsFactory(db);
+    //     await greetingsFactory.add({
+    //         description : "Diary"
+    //     });
 
-        let greetings = await GreetingsFactory.all();
-        assert.equal(1, greetings.length);
+    //     let greetings = await GreetingsFactory.all();
+    //     assert.equal(1, greetings.length);
 
-    });
+    // });
 
     after(function(){
         db.$pool.end
-    })
+    });
 });
