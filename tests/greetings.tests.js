@@ -1,3 +1,6 @@
+import assert from "assert";
+import greetingsFactory from '../greetings.factory.js';
+
 describe('the greet factory function' , function(){
     describe('Greet in different languages' , function(){
         it('should be able to greet in "English' , function(){

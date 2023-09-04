@@ -2,16 +2,10 @@ import exphbs from 'express-handlebars';
 import express from 'express';
 import bodyParser from 'body-parser';
 import GreetingsFactory from './greetings.factory.js';
-import flash from 'express-flash';
-import session from 'express-session';
-import pgPromise from 'pg-promise';
-
-
-
+import  session from 'express-session';
+import flash from 'connect-flash';
 
 let app = express();
-const connectionString = process.env.DATABASE_URL || "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
-const pgpInstant = pgPromise();
 //const database = pgp(connectionString);
 let greetingObject = GreetingsFactory();
 //const data = query(database);
@@ -34,32 +28,39 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-app.get('/', function (req, res) {
+app.get('/', async function (req, res) {
   res.render('home', {
     message: greetingObject.getMessage(),
     errorMsg: greetingObject.getError(),
-    counts: greetingObject.getNameCount(),
+    counts: await greetingObject.getNameCount(),
     resetmessage: greetingObject.getResetMessage(),
-    
   });
 });
-app.get('/greeted', function (req, res) {
 
-  res.render('users', { names: greetingObject.getNamesGreeted() })
+app.get('/greeted', async function (req, res) {
+  let names = await greetingObject.getNamesGreeted();
+  res.render('users', {
+    names
+  });
+  
 });
 
-app.get('/greeted/:name', function (req, res) {
-
+app.get('/greeted/:name', async function (req, res) {
+  let result = await greetingObject.getGreetedCount(req.params.name);
+  console.log(result);
   res.render('count', {
-    count: greetingObject.getGreetedCount(req.params.name),
+    count: result,
     name: req.params.name,
-
   });
-  //res.redirect('/greeted');
 });
-//async
+
+app.get('/reset', async function (req,res){
+    await greetingObject.reset();
+    res.redirect('/');
+});
+
 app.post('/greet', async function (req, res) {
-  greetingObject.greet(req.body.inputName, req.body.languageRadio);
+  await greetingObject.greet(req.body.inputName, req.body.languageRadio);
   res.redirect('/');
   
 });

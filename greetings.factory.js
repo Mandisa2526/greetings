@@ -1,10 +1,27 @@
+import pgPromise from 'pg-promise';
+
+// Create Database Connection
+const pgp = pgPromise();
+const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
+const db = pgp(connectionString);
+
+async function fetchCountUserByName(name) {
+    let result = await db.any(`SELECT user_count FROM users WHERE user_name = '${name}'`);
+    console.log(result);
+    if (result.length == 0) {
+        return undefined;
+    } else {
+        return result[0].user_count
+    }
+}
+
 export default function GreetingsFactory() {
     var message = "";
     var error = "";
     var message2 = "";
     var namesGreeted = {};
 
-    function greet(name, language) {
+    async function greet(name, language) {
         error = '';
         if (!name) {
             error += 'Enter your name!';
@@ -28,12 +45,14 @@ export default function GreetingsFactory() {
 
             //when the greet button is pressed check if this user was already greeted before
             //by looking if the userName exists in namesGreeted if not increment this counter and update the screen
-            if (namesGreeted[name] === undefined) {
+            let count = await fetchCountUserByName(name);
+            if (count === undefined) {
                 //add an entry for the user that was greeted in the Object Map
-                namesGreeted[name] = 1;
+                await db.none(`INSERT INTO users(user_count, user_name) VALUES (1, '${name}')`);
             } else {
                 // update the counter for a specific username
-                namesGreeted[name]++;
+                await db.none(`UPDATE users SET user_count = '${count}' where user_name = '${name}'`);
+            // update;
             }
         } else {
             message = "";
@@ -41,27 +60,27 @@ export default function GreetingsFactory() {
 
     }
 
-    function getNameCount() {
-        return Object.keys(namesGreeted).length
+    async function getNameCount() {
+        let result = await db.one("SELECT count(*) FROM users");
+        return  result.count;
     }
 
-    function getNamesGreeted() {
-        let names = [];
-        Object.keys(namesGreeted).forEach(key => {
-            names.push({
-                name: key,
-            })
-        });
+    async function getNamesGreeted() {
+        let names = await db.any('SELECT user_name FROM users');
         return names;
     }
 
-    function getGreetedCount(name){
-      return namesGreeted[name];
+    async function getGreetedCount(name){
+        let namesGreeted = await  db.any(`SELECT user_count FROM users WHERE user_name = '${name}'`);
+        if (namesGreeted.length == 0) {
+            return 0
+        }
+        return namesGreeted[0].user_count;
+
     }
 
     function reset() {
-        namesGreeted = {};
-        //message2 = "Successfully cleared!";
+       return db.none('DELETE FROM users WHERE 1=1');
     }
 
     function getResetMessage() {
