@@ -1,22 +1,22 @@
 import assert from "assert";
-import greetingsFactory from '../greetings.factory.js';
+import GreetingsFactory from '../greetings.factory.js';
 
 describe('the greet factory function' , function(){
     describe('Greet in different languages' , function(){
         it('should be able to greet in "English' , function(){
-            let greetDifferent = greetingsFactory();
+            let greetDifferent = GreetingsFactory();
             greetDifferent.greet('Samu', "English")
             assert.equal('Hello, SAMU!', greetDifferent.getMessage());
     
         });
         it('should be able to greet in "Afrikaans"' , function(){
-            let greetDifferent2 = greetingsFactory();
+            let greetDifferent2 = GreetingsFactory();
             greetDifferent2.greet('Ntokozo', 'Afrikaans')
             assert.equal('Hallo, NTOKOZO!', greetDifferent2.getMessage());
             
         });
         it('should be able to greet in "isiZulu" ' , function(){
-            let greetDifferent3 = greetingsFactory();
+            let greetDifferent3 = GreetingsFactory();
             greetDifferent3.greet('Nhlosenhle', 'isiZulu')
             assert.equal('Sawubona, NHLOSENHLE!', greetDifferent3.getMessage());
         });
@@ -26,14 +26,14 @@ describe('the greet factory function' , function(){
 
     describe('Error Messages ' , function(){
         it('should be able to return an error message when the name is not entered and the language ' , function(){
-            let greetDifferent4 = greetingsFactory();
+            let greetDifferent4 = GreetingsFactory();
             greetDifferent4.greet("");
 
             assert.equal('Enter your name!Please select the language!', greetDifferent4.getError("",""));     
         });
 
         it('should be able to display an error message when the username is not passed' , function(){
-            let greetDifferent4 = greetingsFactory();
+            let greetDifferent4 = GreetingsFactory();
             greetDifferent4.greet("");
 
             greetDifferent4.greet("",'isiZulu')
@@ -44,7 +44,7 @@ describe('the greet factory function' , function(){
             assert.equal('Enter your name!', greetDifferent4.getError());
         });   
         it('should be able to return an error message when the language is not selected' , function(){
-            let greetDifferent4 = greetingsFactory();
+            let greetDifferent4 = GreetingsFactory();
             greetDifferent4.greet("Mandisa");
             greetDifferent4.greet("Mandisa","")
             assert.equal('Please select the language!', greetDifferent4.getError());     
@@ -53,7 +53,7 @@ describe('the greet factory function' , function(){
 
     describe('Counter' , function(){
         it('should be able to count names entered' , function(){
-            var namesCounts = greetingsFactory();
+            var namesCounts = GreetingsFactory();
            
             namesCounts.greet('Sammy');
             namesCounts.greet('Mandisa');
@@ -63,7 +63,7 @@ describe('the greet factory function' , function(){
         });
 
         it("should  not count when the name has been passed multiple times" , function(){
-            var namesCounts = greetingsFactory();
+            var namesCounts = GreetingsFactory();
             namesCounts.greet('Nobuhle');
             namesCounts.greet('Nobuhle');
             namesCounts.greet('Sammy');
@@ -75,7 +75,7 @@ describe('the greet factory function' , function(){
         });
         
         it("should be able to store the usernames passed" , function(){
-            var namesCounts = greetingsFactory();
+            var namesCounts = GreetingsFactory();
             namesCounts.reset();
             namesCounts.getNameCount();
             namesCounts.greet('Mpatho');
@@ -88,7 +88,7 @@ describe('the greet factory function' , function(){
     describe('Reset Button' , function(){
         
         it("should be able to reset the counter to zero" , function(){
-            var namesCounts = greetingsFactory();
+            var namesCounts = GreetingsFactory();
             namesCounts.reset();
             namesCounts.greet('Nobuhle');
             namesCounts.greet('Mpatho');
@@ -102,4 +102,40 @@ describe('the greet factory function' , function(){
     
     
 
+});
+
+import assert from 'assert';
+import GreetingsFactory from '../greetings.factory.js';
+import fetchCountUserByName from '../greetings.factory.js'
+import pgp from 'pg-promise';
+
+// we are using a special test database for the tests
+const connectionString = process.env.DATABASE_URL || 'postgresql://localhost:3002/database.tests.js';
+
+const db = pgp(connectionString);
+
+describe('The basic database web app', function(){
+
+    beforeEach(async function(){
+        // clean the tables before each test run
+        await db.none("delete from users;");
+        //await db.none("delete from categories;");
+    });
+
+    it('should pass the db test', async function(){
+        
+        // the Factory Function is called CategoryService
+        let greetingsFactory = GreetingsFactory(db);
+        await greetingsFactory.add({
+            description : "Diary"
+        });
+
+        let greetings = await GreetingsFactory.all();
+        assert.equal(1, greetings.length);
+
+    });
+
+    after(function(){
+        db.$pool.end
+    })
 });
