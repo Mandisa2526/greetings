@@ -4,10 +4,17 @@ import bodyParser from 'body-parser';
 import GreetingsFactory from './greetings.factory.js';
 import  session from 'express-session';
 import flash from 'connect-flash';
+import pgPromise from 'pg-promise';
+
+
+
+// Create Database Connection
+const pgp = pgPromise();
+const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
+const db = pgp(connectionString);
 
 let app = express();
-//const database = pgp(connectionString);
-let greetingObject = GreetingsFactory();
+let greetingObject = GreetingsFactory(db);
 //const data = query(database);
 
 

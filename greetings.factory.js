@@ -1,11 +1,5 @@
-import pgPromise from 'pg-promise';
 
-// Create Database Connection
-const pgp = pgPromise();
-const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
-const db = pgp(connectionString);
-
-async function fetchCountUserByName(name) {
+async function fetchCountUserByName(db, name) {
     let result = await db.any(`SELECT user_count FROM users WHERE user_name = '${name}'`);
     console.log(result);
     if (result.length == 0) {
@@ -15,7 +9,7 @@ async function fetchCountUserByName(name) {
     }
 }
 
-export default function GreetingsFactory() {
+export default function GreetingsFactory(db) {
     var message = "";
     var error = "";
     var message2 = "";
@@ -45,7 +39,7 @@ export default function GreetingsFactory() {
 
             //when the greet button is pressed check if this user was already greeted before
             //by looking if the userName exists in namesGreeted if not increment this counter and update the screen
-            let count = await fetchCountUserByName(name);
+            let count = await fetchCountUserByName(db, name);
             if (count === undefined) {
                 //add an entry for the user that was greeted in the Object Map
                 await db.none(`INSERT INTO users(user_count, user_name) VALUES (1, '${name}')`);

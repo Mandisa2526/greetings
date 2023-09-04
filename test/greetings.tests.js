@@ -1,6 +1,13 @@
 import assert from "assert";
 import GreetingsFactory from '../greetings.factory.js';
-import pgp from 'pg-promise';
+import pgPromise from 'pg-promise';
+
+const pgp = pgPromise();
+
+const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
+const db = pgp(connectionString);
+
+
 
 
 
@@ -60,52 +67,17 @@ describe('the greet factory function' , function(){
 
 
 describe('The basic database web app', function(){
-    let dataBase;
 
 
     beforeEach(async function(){
-        // clean the tables before each test run
-       //await db.none("delete from users;");
-        //await db.none("delete from users;");
-        const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
-        const db = pgp(connectionString);
-        dataBase = pgp()(connectionString);
     });
     it("should able to insert user names", async function () {
 
         let greetingsFactory = GreetingsFactory();
 
-        await greetingsFactory.GreetingsFactory("Mandisa");
-    
-        // try {
-        //     let greetingsFactory = GreetingsFactory();
-
-        //     await greetingsFactory.add({
-        //         description: "Eric",
-        //     });
-        //     await greetingsFactory.add({
-        //         description: "lwandle",
-        //     });
-        //     let greetings = await GreetingsFactory.all();
-        //     assert.equal(2, greetings.length);
-        // } catch (err) {
-        //     console.log(err);
-        // }
+        await greetingsFactory.greet("Mandisa");
 
     });
-
-    // it('should pass the db test', async function(){
-        
-    //     // the Factory Function is called CategoryService
-    //     let greetingsFactory = GreetingsFactory(db);
-    //     await greetingsFactory.add({
-    //         description : "Diary"
-    //     });
-
-    //     let greetings = await GreetingsFactory.all();
-    //     assert.equal(1, greetings.length);
-
-    // });
 
     after(function(){
         db.$pool.end
