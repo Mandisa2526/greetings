@@ -5,6 +5,7 @@ import GreetingsFactory from './greetings.factory.js';
 import  session from 'express-session';
 import flash from 'connect-flash';
 import pgPromise from 'pg-promise';
+import 'dotenv/config';
 
 // Create Database Connection
 const pgp = pgPromise();
@@ -46,7 +47,7 @@ app.use(express.static('public'));
 app.get('/', async function (req, res) {
   res.render('home', {
     message: greetingObject.getMessage(),
-    //errorMsg: greetingObject.getError(),
+    errorMsg: greetingObject.getError(),
     counts: await greetingObject.getNameCount(),
     resetmessage: greetingObject.getResetMessage(),
   });

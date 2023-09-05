@@ -59,7 +59,7 @@
                 </div>
             </div>
             <script>
-                {{ let greetMessage = document.querySelector(".greet");
+                let greetMessage = document.querySelector(".greet");
                 let error = document.querySelector("#error");
                 //let clearMessage = document.querySelector(".reset");
                 let resetBtn = document.querySelector(".resetButton");
@@ -69,7 +69,7 @@
                     error.innerHTML = "";
                     //clearMessage.innerHTML = "";
 
-                }, 3000); }}
+                }, 3000);
 
             </script>
         </div>
