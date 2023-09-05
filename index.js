@@ -6,8 +6,6 @@ import  session from 'express-session';
 import flash from 'connect-flash';
 import pgPromise from 'pg-promise';
 
-
-
 // Create Database Connection
 const pgp = pgPromise();
 const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
@@ -16,6 +14,16 @@ const db = pgp(connectionString);
 let app = express();
 let greetingObject = GreetingsFactory(db);
 //const data = query(database);
+
+// initialise session middleware - flash-express depends on it
+app.use(session({
+  secret : "<add a secret string here>",
+  resave: false,
+  saveUninitialized: true
+}));
+
+// initialise the flash middleware
+app.use(flash());
 
 
 //configure handlebars
@@ -38,7 +46,7 @@ app.use(express.static('public'));
 app.get('/', async function (req, res) {
   res.render('home', {
     message: greetingObject.getMessage(),
-    errorMsg: greetingObject.getError(),
+    //errorMsg: greetingObject.getError(),
     counts: await greetingObject.getNameCount(),
     resetmessage: greetingObject.getResetMessage(),
   });

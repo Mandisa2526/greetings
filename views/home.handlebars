@@ -27,7 +27,6 @@
                         <div class="text-center">
                             <p id="reset" class="reset">{{resetmessage}}</p>
                             <p id="error" class="error">{{errorMsg}}</p>
-
                             <input class="input" type="text" placeholder="Your name.. " name="inputName"
                                 pattern="[A-Za-z]+" title="no numbers or special characters" size="50" />
                             <span class="countNames" value="nameCounts">{{counts}}</span>
@@ -60,7 +59,7 @@
                 </div>
             </div>
             <script>
-                let greetMessage = document.querySelector(".greet");
+                {{ let greetMessage = document.querySelector(".greet");
                 let error = document.querySelector("#error");
                 //let clearMessage = document.querySelector(".reset");
                 let resetBtn = document.querySelector(".resetButton");
@@ -70,7 +69,7 @@
                     error.innerHTML = "";
                     //clearMessage.innerHTML = "";
 
-                }, 3000);
+                }, 3000); }}
 
             </script>
         </div>

@@ -1,7 +1,6 @@
 
 async function fetchCountUserByName(db, name) {
     let result = await db.any(`SELECT user_count FROM users WHERE user_name = '${name}'`);
-    console.log(result);
     if (result.length == 0) {
         return undefined;
     } else {
@@ -13,7 +12,6 @@ export default function GreetingsFactory(db) {
     var message = "";
     var error = "";
     var message2 = "";
-    var namesGreeted = {};
 
     async function greet(name, language) {
         error = '';
