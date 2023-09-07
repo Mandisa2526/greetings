@@ -5,26 +5,19 @@ import GreetingsFactory from './greetings.factory.js';
 import  session from 'express-session';
 import flash from 'connect-flash';
 import pgPromise from 'pg-promise';
-import 'dotenv/config';
+import Query from './service/query.js';
+//import dotenv from 'env';
+
 
 // Create Database Connection
 const pgp = pgPromise();
 const connectionString = "postgres://mandisa_codex:gX9hgC7FD2sanFJOAAXIEPNgLUVS7TDz@dpg-cjic647jbvhs738fq9g0-a.oregon-postgres.render.com/greetings_routesdata?ssl=true";
 const db = pgp(connectionString);
 
+let database = Query(db);
 let app = express();
 let greetingObject = GreetingsFactory(db);
 //const data = query(database);
-
-// initialise session middleware - flash-express depends on it
-app.use(session({
-  secret : "<add a secret string here>",
-  resave: false,
-  saveUninitialized: true
-}));
-
-// initialise the flash middleware
-app.use(flash());
 
 
 //configure handlebars
@@ -45,38 +38,51 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/', async function (req, res) {
-  res.render('home', {
-    message: greetingObject.getMessage(),
+  let counter = await database.countAll();
+  console.log(counter.count);
+   res.render('home', {
     errorMsg: greetingObject.getError(),
-    counts: await greetingObject.getNameCount(),
-    resetmessage: greetingObject.getResetMessage(),
+    languageGreet: greetingObject.getGreet(),
+    counts: await database.countAll(),
+    resetmessage: greetingObject.getSuccessMessage(),
   });
 });
 
 app.get('/greeted', async function (req, res) {
-  let names = await greetingObject.getNamesGreeted();
+    let names = await database.selectNames()
+
   res.render('users', {
     names
+  });
+});
+
+app.get('/greeted/:name', async function (req, res) {
+  let greetedName = req.params.name
+  let result = await database.userAndCount(greetedName);
+  
+  res.render('count', {
+    result,
+     greetedName
   });
   
 });
 
-app.get('/greeted/:name', async function (req, res) {
-  let result = await greetingObject.getGreetedCount(req.params.name);
-  console.log(result);
-  res.render('count', {
-    count: result,
-    name: req.params.name,
-  });
-});
-
 app.get('/reset', async function (req,res){
-    await greetingObject.reset();
+    greetingObject.reset();
+    await database.deleteAllUsers()
     res.redirect('/');
 });
 
-app.post('/greet', async function (req, res) {
-  await greetingObject.greet(req.body.inputName, req.body.languageRadio);
+app.post('/', async function (req, res) {
+  let radioBtn = req.body.languageRadio;
+  let nameInput = req.body.inputName;
+
+  greetingObject.setError(nameInput, radioBtn);
+  greetingObject.setUserName(nameInput);
+  greetingObject.setLanguage(radioBtn);
+  if (greetingObject.getError() === undefined) {
+    await database.inserTable(nameInput);
+  }
   res.redirect('/');
   
 });
